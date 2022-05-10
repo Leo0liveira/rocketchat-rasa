@@ -1,5 +1,5 @@
 # Rasa
-# models/
+models/
 actions/secrets.py
 story_graph.dot
 graph.html
@@ -16,7 +16,6 @@ index.html
 *.csv
 *.db*
 .rasa
-models
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
