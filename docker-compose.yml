@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  # ================================= Bot =====================================
+  # Generic Rasa bot, used to run console for example.
+  bot:
+    build:
+      context: .
+      dockerfile: ./docker/bot.Dockerfile
+    container_name: bot
+    volumes:
+      - ./bot/:/bot/
+    ports:
+      - 5005:5005
+    depends_on:
+      - actions
+    networks:
+      - bot
+  # ================================= Actions =================================
+  # Rasa middleware used to connect with external APIs.
+  actions:
+    build:
+      context: .
+      dockerfile: ./docker/actions.Dockerfile
+    container_name: actions
+    ports:
+      - 5055:5055
+    volumes:
+      - ./bot/actions:/bot/actions
+    networks:
+      - bot
+
+networks:
+  bot:
+    driver: bridge
