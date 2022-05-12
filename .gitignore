@@ -1,12 +1,10 @@
 # Rasa
 models/
 actions/secrets.py
-story_graph.dot
-graph.html
+*.dot
+*.html
 .rasa/cache
-actions/__pycache__
-credentials.yml
-endpoints.yml
+*__pycache__
 # docker-compose.yml
 # Dockerfile
 index.html
@@ -157,3 +155,7 @@ node_modules/
 # Others
 /data
 /uploads
+
+# VIM
+*.swp
+*.swo
