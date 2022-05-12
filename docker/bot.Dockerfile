@@ -5,3 +5,6 @@ COPY ./bot /bot
 
 USER root
 USER 1001
+
+ENTRYPOINT []
+CMD []

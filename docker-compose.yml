@@ -12,10 +12,11 @@ services:
       - ./bot/:/bot/
     ports:
       - 5005:5005
-    depends_on:
-      - actions
+    #depends_on:
+    #  - actions
     networks:
       - bot
+    command: "rasa run --enable-api -vv"
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
@@ -68,8 +69,8 @@ services:
      - ./data/db:/data/db
      #- ./data/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
-    labels:
-      - "traefik.enable=false"
+    #labels:
+    #  - "traefik.enable=false"
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
@@ -88,27 +89,6 @@ services:
         done; (exit $$s)"
     depends_on:
       - mongo
-
-  #traefik:
-  #  image: traefik:latest
-  #  restart: unless-stopped
-  #  command: >
-  #    traefik
-  #     --docker
-  #     --acme=true
-  #     --acme.domains='your.domain.tld'
-  #     --acme.email='your@email.tld'
-  #     --acme.entrypoint=https
-  #     --acme.storagefile=acme.json
-  #     --defaultentrypoints=http
-  #     --defaultentrypoints=https
-  #     --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
-  #     --entryPoints='Name:https Address::443 TLS.Certificates:'
-  #  ports:
-  #    - 80:80
-  #    - 443:443
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   bot:
