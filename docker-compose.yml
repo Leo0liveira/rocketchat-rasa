@@ -4,33 +4,15 @@ services:
   # ================================= Bot =====================================
   # Generic Rasa bot, used to run console for example.
   bot:
-    container_name: bot
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
-    volumes:
-      - ./bot/:/bot/
     ports:
       - 5005:5005
-#    depends_on:
-#      - actions
     command: "rasa run --enable-api -vv"
-  # ================================= Actions =================================
-  # Rasa middleware used to connect with external APIs.
-#  actions:
-#    build:
-#      context: .
-#      dockerfile: ./docker/actions.Dockerfile
-#    ports:
-#      - 5055:5055
-#    volumes:
-#      - ./bot/actions:/bot/actions
-#    networks:
-#      - bot
   # =============================== Rocket.Chat =================================
   # Rocket.Chat instance and database
   rocketchat:
-    container_name: rocketchat
     image: registry.rocket.chat/rocketchat/rocket.chat:latest
     command: >
       bash -c
@@ -56,9 +38,6 @@ services:
       - mongo
     ports:
       - 3000:3000
-#    labels:
-#      - "traefik.backend=rocketchat"
-#      - "traefik.frontend.rule=Host: your.domain.tld"
 
   mongo:
     image: mongo:4.0
@@ -67,8 +46,6 @@ services:
      - ./data/db:/data/db
      #- ./data/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
-#    labels:
-#      - "traefik.enable=false"
 
   # this container's job is just run the command to initialize the replica set.
   # it will run the command and remove himself (it will not stay running)
@@ -87,28 +64,3 @@ services:
         done; (exit $$s)"
     depends_on:
       - mongo
-
-  #traefik:
-  #  image: traefik:latest
-  #  restart: unless-stopped
-  #  command: >
-  #    traefik
-  #     --docker
-  #     --acme=true
-  #     --acme.domains='your.domain.tld'
-  #     --acme.email='your@email.tld'
-  #     --acme.entrypoint=https
-  #     --acme.storagefile=acme.json
-  #     --defaultentrypoints=http
-  #     --defaultentrypoints=https
-  #     --entryPoints='Name:http Address::80 Redirect.EntryPoint:https'
-  #     --entryPoints='Name:https Address::443 TLS.Certificates:'
-  #  ports:
-  #    - 80:80
-  #    - 443:443
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock
-
-#networks:
-#  bot:
-#    driver: bridge
