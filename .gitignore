@@ -4,8 +4,7 @@ actions/secrets.py
 *.dot
 *.html
 .rasa/cache
-*__pycache__
-# docker-compose.yml
+actions/__pycache__
 # Dockerfile
 index.html
 .ipynb
