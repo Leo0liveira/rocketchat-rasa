@@ -7,11 +7,12 @@ services:
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
+    restart: unless-stopped
+    command: "rasa run --enable-api -vv"
     ports:
       - 5005:5005
-    command: "rasa run --enable-api -vv"
   # =============================== Rocket.Chat =================================
-  # Rocket.Chat instance and database
+  # Rocket.Chat instance.
   rocketchat:
     image: registry.rocket.chat/rocketchat/rocket.chat:latest
     command: >
@@ -31,20 +32,17 @@ services:
       - MONGO_URL=mongodb://mongo:27017/rocketchat
       - MONGO_OPLOG_URL=mongodb://mongo:27017/local
       - REG_TOKEN=${REG_TOKEN}
-#       - MAIL_URL=smtp://smtp.email
-#       - HTTP_PROXY=http://proxy.domain.com
-#       - HTTPS_PROXY=http://proxy.domain.com
     depends_on:
       - mongo
     ports:
       - 3000:3000
-
+  # =============================== Mongo =================================
+  # Mongo database and replica set.
   mongo:
     image: mongo:4.0
     restart: unless-stopped
     volumes:
      - ./data/db:/data/db
-     #- ./data/dump:/dump
     command: mongod --smallfiles --oplogSize 128 --replSet rs0 --storageEngine=mmapv1
 
   # this container's job is just run the command to initialize the replica set.
