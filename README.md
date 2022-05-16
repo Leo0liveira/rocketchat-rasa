@@ -7,8 +7,8 @@
 4. Depois que o projeto no Bitbucket for criado, mover código para Bitbucket.
 5. Objetivo:
     - [x] Criar um chatbot Rasa 
-    - [ ] Criar um projeto Rocketchat
-    - [ ] Integrar RASA + Rocketchat
+    - [x] Criar um projeto Rocketchat
+    - [x] Integrar RASA + Rocketchat
     - [ ] Implementar transbordo no livechat
 
 ## Links úteis
