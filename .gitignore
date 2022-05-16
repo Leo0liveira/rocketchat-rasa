@@ -1,8 +1,8 @@
 # Rasa
 models/
 actions/secrets.py
-story_graph.dot
-graph.html
+*.dot
+*.html
 .rasa/cache
 actions/__pycache__
 # Dockerfile
@@ -154,3 +154,7 @@ node_modules/
 # Others
 /data
 /uploads
+
+# VIM
+*.swp
+*.swo
