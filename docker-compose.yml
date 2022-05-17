@@ -10,6 +10,16 @@ services:
     ports:
       - 5005:5005
     command: "rasa run --enable-api -vv"
+
+  # ================================= Actions ====================================
+  action-server:
+    build:
+      context: .
+      dockerfile: ./docker/actions.Dockerfile
+    ports:
+      - 5055:5055
+    command: "rasa run actions"
+
   # =============================== Rocket.Chat =================================
   # Rocket.Chat instance and database
   rocketchat:
