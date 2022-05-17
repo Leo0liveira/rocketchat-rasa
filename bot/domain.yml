@@ -1,34 +1,61 @@
-version: "3.1"
-
+version: '3.1'
 intents:
-  - greet
-  - goodbye
-  - affirm
-  - deny
-  - mood_great
-  - mood_unhappy
-  - bot_challenge
+- affirm
+- bot_challenge
+- deny
+- goodbye
+- greet
+- mood_great
+- mood_unhappy
+- request_name
+- say_name
+
+entitites:
+- name
+
+slots:
+  name:
+    influence_conversation: false
+    mappings:
+    - conditions:
+      - active_loop: name_form
+        requested_slot: name
+      type: from_text
+    type: text
+
+forms:
+  name_form:
+    required_slots:
+    - name
+
+actions:
+- action_say_my_name
+- utter_ask_name
+- utter_greet
+- utter_said_name
+- utter_submit
 
 responses:
   utter_greet:
-  - text: "Hey! How are you?"
-
+  - text: Hey! How are you?
   utter_cheer_up:
-  - text: "Here is something to cheer you up:"
-    image: "https://i.imgur.com/nGF1K8f.jpg"
-
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
   utter_did_that_help:
-  - text: "Did that help you?"
-
+  - text: Did that help you?
   utter_happy:
-  - text: "Great, carry on!"
-
+  - text: Great, carry on!
   utter_goodbye:
-  - text: "Bye"
-
+  - text: Bye
+  utter_ask_name:
+  - text: What is your name?
+  utter_submit:
+  - text: Ok. Thanks!
+  utter_said_name:
+  - text: "{name_result}"
   utter_iamabot:
-  - text: "I am a bot, powered by Rasa."
-
+  - text: I am a bot, powered by Rasa.
+  
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true

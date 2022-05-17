@@ -3,5 +3,5 @@
 #  url: "http://actions:5055/webhook"
 
 # Configuração para ambiente local
-#action_endpoint:
-#  url: "http://localhost:5055/webhook"
+action_endpoint:
+ url: "http://localhost:5055/webhook"
