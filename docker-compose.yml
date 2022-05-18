@@ -12,7 +12,7 @@ services:
     command: "rasa run --enable-api -vv"
 
   # ================================= Actions ====================================
-  action-server:
+  actions:
     build:
       context: .
       dockerfile: ./docker/actions.Dockerfile
