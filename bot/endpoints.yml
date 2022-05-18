@@ -1,7 +1,7 @@
 # Configuração para ambiente docker
-#action_endpoint:
-#  url: "http://actions:5055/webhook"
+action_endpoint:
+  url: "http://actions:5055/webhook"
 
 # Configuração para ambiente local
-#action_endpoint:
+# action_endpoint:
 #  url: "http://localhost:5055/webhook"

@@ -11,6 +11,14 @@ services:
     command: "rasa run --enable-api -vv"
     ports:
       - 5005:5005
+  # ================================= Actions =================================
+  # Rasa middleware used to connect with external APIs.
+  actions:
+    image: rasa/rasa-sdk:3.1.1
+    volumes:
+      - ./bot/actions:/app/actions
+    ports:
+      - 5055:5055
   # =============================== Rocket.Chat =================================
   # Rocket.Chat instance.
   rocketchat:
