@@ -14,12 +14,7 @@ Passo a passo de como realizar uma integração do Rocket.Chat com Rasa.
 <img align="right" height="230" src="https://www.rasa.com/assets/img/sara/sara-open-source-2.0.png" alt="An image of Sara, the Rasa mascot bird, holding a flag that reads Open Source with one wing, and a wrench in the other" title="Rasa Open Source">
 
 ## 1. Setup - [Rasa](https://rasa.com/docs/rasa/) 
-### 1.1 Acessando a aplicação
-* Subindo o container
-  ``` sh
-  docker-compose up -d bot
-  ```
-
+### 1.1 Configuração do Bot
 * Configure o `credentials.yml` de acordo com o bot criado no passo 2.3
   ```sh
   rocketchat:
@@ -27,6 +22,18 @@ Passo a passo de como realizar uma integração do Rocket.Chat com Rasa.
     password: "rasa_bot"
     server_url: "http://rocketchat:3000"
   ```
+ 
+### 1.2 Configuração do Actions
+* Configure o `endpoints.yml` de acordo com seu ambiente
+```sh
+# Configuração para ambiente docker
+action_endpoint:
+  url: "http://actions:5055/webhook"
+
+# Configuração para ambiente local
+action_endpoint:
+  url: "http://localhost:5055/webhook"
+```
 
 ---
 <p align="center">
