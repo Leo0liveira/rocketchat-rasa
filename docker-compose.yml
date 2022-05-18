@@ -9,14 +9,17 @@ services:
       dockerfile: ./docker/bot.Dockerfile
     restart: unless-stopped
     command: "rasa run --enable-api -vv"
+    depends_on:
+      - actions
     ports:
       - 5005:5005
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
-    image: rasa/rasa-sdk:3.1.1
-    volumes:
-      - ./bot/actions:/app/actions
+    build:
+      context: .
+      dockerfile: ./docker/actions.Dockerfile
+    restart: unless-stopped
     ports:
       - 5055:5055
   # =============================== Rocket.Chat =================================
