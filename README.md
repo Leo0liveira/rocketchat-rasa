@@ -67,6 +67,11 @@ Password: rasa_bot
 Roles: bot
 ```
 
+Ou execute o **script**.
+```sh
+python3 ./scripts/create_bot.py
+```
+
 ### 2.4 Configuração do WebHook
 Siga **Administration** > **Integrations** > **+ New** > **Outgoing**.
 ```
