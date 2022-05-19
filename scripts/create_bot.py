@@ -5,13 +5,8 @@ import logging
 import requests
 
 # == Log Config ==
+logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.DEBUG)
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
-
-handler = logging.StreamHandler()
-handler.setLevel(logging.DEBUG)
-logger.addHandler(handler)
 
 # == User Info == 
 admin_name = "boss"
@@ -31,7 +26,7 @@ def get_authentication_token(user):
     response = requests.post(host + path, data=login_data)
 
     if response.json()["status"] == "success":
-        logger.debug(f"Login succeed | Header = {user}")
+        logger.info(f"Login succeed | Header = {user}\n")
 
         authToken = response.json()["data"]["authToken"]
         userId = response.json()["data"]["userId"]
@@ -43,7 +38,7 @@ def get_authentication_token(user):
 
         return user_header
     else:
-        logger.error(f"Login failed | {response}") 
+        logger.error(f"Login failed | {response}\n") 
 
 def create_bot_user():
     user_info = {
@@ -65,9 +60,9 @@ def create_bot_user():
     )
 
     if create_user_response.json()["success"] == True:
-        logger.debug(f"Bot created | Bot = {bot_name}")
+        logger.info(f"Bot created | Bot = {bot_name}\n")
     else:
-        logger.error(f"Unable to create bot  | {create_user_response}")
+        logger.error(f"Unable to create bot  | {create_user_response}\n")
 
     
 def set_bot_avatar():
@@ -85,10 +80,31 @@ def set_bot_avatar():
     )
 
     if set_avatar_response.json()["success"] == True:
-        logger.debug(f"Avatar created | User = {bot_name}")
+        logger.info(f"Avatar created | User = {bot_name}\n")
     else:
-        logger.error(f"Unable to create avatar | {set_avatar_response}")
+        logger.error(f"Unable to create avatar | {set_avatar_response}\n")
+
+def set_bot_status_active():
+    user_status = {
+        "message": "My status update", 
+        "status": "online" 
+    }
+
+    user_header = get_authentication_token(bot_name)
+
+    set_user_status_response = requests.post(
+        host + "/api/v1/users.setStatus",
+        data=json.dumps(user_status),
+        headers=user_header
+    )
+
+    if set_user_status_response.json()["success"] == True:
+        logger.info(f"Status ON | Bot = {bot_name}\n")
+    else:
+        logger.error(f"Unable to activate status | {set_user_status_response}\n")
+    
 
 if __name__ == '__main__':
     create_bot_user()
     set_bot_avatar()
+    set_bot_status_active()
