@@ -4,6 +4,16 @@ import json
 import logging
 import requests
 
+# == Log Config ==
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+format = logging.Formatter('%(name)s - %(levelname)s - %(message)s')
+
+handler = logging.StreamHandler()
+handler.setLevel(logging.DEBUG)
+logger.addHandler(handler)
+
+# == User Info == 
 admin_name = "boss"
 admin_password = "boss"
 
@@ -21,7 +31,7 @@ def get_authentication_token():
     response = requests.post(host + path, data=login_data)
 
     if response.json()["status"] == "success":
-        logging.info("Login suceeded")
+        logger.debug(f"Login succeed | Admin = {admin_name}")
 
         authToken = response.json()["data"]["authToken"]
         userId = response.json()["data"]["userId"]
@@ -33,7 +43,7 @@ def get_authentication_token():
 
         return user_header
     else:
-        print(response)
+        logger.error(f"Login failed | Admin  = {admin_name}") 
 
 def create_bot_user():
     user_info = {
@@ -50,8 +60,13 @@ def create_bot_user():
         data=json.dumps(user_info),
         headers=user_header
     )
+
+    if create_user_response.json()["success"] == True:
+        logger.debug(f"Bot created | Bot = {bot_name}")
+    else:
+        logger.error(f"Unable to create bot  | Bot = {bot_name}")
+
     
-    print(create_user_response)
 
 if __name__ == '__main__':
     user_header = get_authentication_token()
