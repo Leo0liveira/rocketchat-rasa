@@ -26,12 +26,12 @@ user_header = None
 
 path = "/api/v1/login"
 
-def get_authentication_token():
-    login_data = {"username": admin_name, "password": admin_password}
+def get_authentication_token(user):
+    login_data = {"username": user, "password": user}
     response = requests.post(host + path, data=login_data)
 
     if response.json()["status"] == "success":
-        logger.debug(f"Login succeed | Admin = {admin_name}")
+        logger.debug(f"Login succeed | Header = {user}")
 
         authToken = response.json()["data"]["authToken"]
         userId = response.json()["data"]["userId"]
@@ -43,7 +43,7 @@ def get_authentication_token():
 
         return user_header
     else:
-        logger.error(f"Login failed | Admin  = {admin_name}") 
+        logger.error(f"Login failed | {response}") 
 
 def create_bot_user():
     user_info = {
@@ -51,9 +51,12 @@ def create_bot_user():
         "email": bot_email,
         "password": bot_password,
         "username": bot_name,
-        'requirePasswordChange': False,
-        'sendWelcomeEmail': True, 'roles': ['bot']
+        "requirePasswordChange": False,
+        "sendWelcomeEmail": True, 
+        "roles": ["bot"],
     }
+
+    user_header = get_authentication_token(admin_name)
 
     create_user_response = requests.post(
         host + '/api/v1/users.create',
@@ -64,10 +67,28 @@ def create_bot_user():
     if create_user_response.json()["success"] == True:
         logger.debug(f"Bot created | Bot = {bot_name}")
     else:
-        logger.error(f"Unable to create bot  | Bot = {bot_name}")
+        logger.error(f"Unable to create bot  | {create_user_response}")
 
     
+def set_bot_avatar():
+    avatar_config = {
+        "username": bot_name,
+        "avatarUrl": "https://www.rasa.com/assets/img/sara/sara-open-source-2.0.png",
+    }
+
+    user_header = get_authentication_token(bot_name)
+
+    set_avatar_response = requests.post(
+        host + "api/v1/users.setAvatar",
+        data=json.dumps(avatar_config),
+        headers=user_header
+    )
+
+    if set_avatar_response.json()["success"] == True:
+        logger.debug(f"Avatar created | User = {bot_name}")
+    else:
+        logger.error(f"Unable to create avatar | {set_avatar_response}")
 
 if __name__ == '__main__':
-    user_header = get_authentication_token()
     create_bot_user()
+    set_bot_avatar()
