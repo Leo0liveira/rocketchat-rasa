@@ -73,3 +73,10 @@ services:
         done; (exit $$s)"
     depends_on:
       - mongo
+  # =============================== Sara Mascot =================================
+  # Script to activate my favorite chatbot.
+  sara:
+    build:
+      context: .
+      dockerfile: ./docker/sara.Dockerfile
+    command: "python3 ./create_bot.py"
