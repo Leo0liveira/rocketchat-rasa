@@ -94,3 +94,31 @@ Siga **Advanced Settings**.
 ```
 Retry Failed Url Calls: false
 ```
+---
+## 3. Setup - [Okteto](https://www.okteto.com/)
+### 3.1 Acessando a aplicação 
+
+  Navegue até a branch denonimada "Okteto" por meio do comando:
+```
+$ git checkout okteto
+```
+ Onde possui as configurações necessárias para realizar o deploy da aplicação no okteto, são elas:   
+No arquivo `endpoints.yml` deve-se substituir o link presente pelo equivalente gerado no okteto, exemplo: 
+```
+action_endpoint:
+  url: "https://link-gerado-pelo-okteto.cloud.okteto.net/webhook"
+```
+No arquivo `credentials.yml`substituir, novamente, o url presente por:
+```
+server_url: 
+  "https://link-gerado-pelo-okteto/webhooks/rocketchat/webhook"
+```
+* Detalhe: Este link é o nome do serviço descrito no `docker-compose.yml` seguido por seu "-usuário.cloud.okteto.net"
+
+Por fim, execute o comando:
+```
+okteto stack deploy --build
+```
+Abra o link que será gerado no site do próprio okteto, ele será parecido com este, sendo que a única diferença será o nome do usuário presente no link.
+* https://rocketchat-leo0liveira.cloud.okteto.net/
+---
