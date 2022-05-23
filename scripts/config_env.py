@@ -19,7 +19,8 @@ bot_password = "rasa_bot"
 bot_email = bot_name + '@email.com'
 
 # == Host Info ==
-host = "http://rocketchat:3000/"
+#host = http://rocketchat:3000/ # Rocketchat - Docker
+host = "http://localhost:3000/" # Rockechat - Local
 path = "/api/v1/login"
 user_header = None
 
@@ -51,7 +52,7 @@ def create_bot_user():
         "username": bot_name,
         "requirePasswordChange": False,
         "sendWelcomeEmail": True, 
-        "roles": ["bot"],
+        "roles": ["bot", "livechat-agent"],
     }
 
     user_header = get_authentication_token(admin_name)
@@ -106,7 +107,6 @@ def set_bot_status_active():
     else:
         logger.error(f"Unable to activate status | {set_user_status_response}")
     
-
 def config_bot():
     create_bot_user()
     set_bot_avatar()
@@ -115,7 +115,9 @@ def config_bot():
 if __name__ == '__main__':
     logger.info("===== Sara Mascot S2 =====")
 
-    rasa_url = "http://bot:5005/"
+    #rasa_url = "http://bot:5005/" # Rasa - Docker
+    rasa_url = "http://localhost:5005/" # Rasa - Local
+
 
     response = False
 
