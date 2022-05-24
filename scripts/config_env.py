@@ -69,13 +69,13 @@ def create_bot_user():
         logger.error(f"Unable to create bot  | {create_user_response}")
 
     
-def set_bot_avatar():
+def set_avatar(user):
     avatar_config = {
-        "username": bot_name,
+        "username": user,
         "avatarUrl": "https://www.rasa.com/assets/img/sara/sara-open-source-2.0.png",
     }
 
-    user_header = get_authentication_token(bot_name)
+    user_header = get_authentication_token(user)
 
     set_avatar_response = requests.post(
         host + "api/v1/users.setAvatar",
@@ -84,17 +84,17 @@ def set_bot_avatar():
     )
 
     if set_avatar_response.json()["success"] == True:
-        logger.info(f"Avatar updated | User = {bot_name}")
+        logger.info(f"Avatar updated | User = {user}")
     else:
         logger.error(f"Unable to create avatar | {set_avatar_response}")
 
-def set_bot_status_active():
+def set_status_active(user):
     user_status = {
         "message": "My status update", 
         "status": "online" 
     }
 
-    user_header = get_authentication_token(bot_name)
+    user_header = get_authentication_token(user)
 
     set_user_status_response = requests.post(
         host + "/api/v1/users.setStatus",
@@ -103,14 +103,14 @@ def set_bot_status_active():
     )
 
     if set_user_status_response.json()["success"] == True:
-        logger.info(f"Status ON | Bot = {bot_name}")
+        logger.info(f"Status ON | User = {user}")
     else:
         logger.error(f"Unable to activate status | {set_user_status_response}")
     
 def config_bot():
     create_bot_user()
-    set_bot_avatar()
-    set_bot_status_active()
+    set_avatar(bot_name)
+    set_status_active(bot_name)
 
 if __name__ == '__main__':
     logger.info("===== Sara Mascot S2 =====")
