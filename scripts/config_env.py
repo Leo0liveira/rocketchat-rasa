@@ -105,17 +105,32 @@ def set_status_active(user):
     if set_user_status_response.json()["success"] == True:
         logger.info(f"Status ON | User = {user}")
     else:
-        logger.error(f"Unable to activate status | {set_user_status_response}")
+        logger.error(f"Status OFF | {set_user_status_response}")
     
 def config_bot():
     create_bot_user()
     set_avatar(bot_name)
     set_status_active(bot_name)
 
+def enable_livechat():
+    user_header = get_authentication_token(admin_name)
+
+    livechat_response = requests.post(
+        host + '/api/v1/settings/Livechat_enabled',
+        data=json.dumps({'value': True}),
+        headers=user_header
+    )
+    
+    if livechat_response.json()["success"] == True:
+        logger.info("Livechat ON")
+    else:
+        logger.error(f"Livechat OFF | {livechat_response}")
+
+
 if __name__ == '__main__':
     logger.info("===== Sara Mascot S2 =====")
 
-    #rasa_url = "http://bot:5005/" # Rasa - Docker
+    #rasa_url = "http://bot:5005/"      # Rasa - Docker
     rasa_url = "http://localhost:5005/" # Rasa - Local
 
 
@@ -126,7 +141,13 @@ if __name__ == '__main__':
             response = requests.get(rasa_url)
             response = True
             logger.info("Rasa Server UP!")
+
+            logger.info(">> Configure Bot")
             config_bot()
+
+            logger.info(">> Configure Livechat")
+            enable_livechat()
+
         except:
             logger.info("Rasa Server DOWN...") 
         finally:
