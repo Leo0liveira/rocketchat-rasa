@@ -25,15 +25,15 @@ Passo a passo de como realizar uma integração do Rocket.Chat com Rasa.
  
 ### 1.2 Configuração do Actions
 * Configure o `endpoints.yml` de acordo com seu ambiente
-```sh
-# Configuração para ambiente docker
-action_endpoint:
-  url: "http://actions:5055/webhook"
+  ```sh
+  # Configuração para ambiente docker
+  action_endpoint:
+    url: "http://actions:5055/webhook"
 
-# Configuração para ambiente local
-action_endpoint:
-  url: "http://localhost:5055/webhook"
-```
+  # Configuração para ambiente local
+  action_endpoint:
+    url: "http://localhost:5055/webhook"
+  ```
 
 ---
 <p align="center">
@@ -76,8 +76,13 @@ Roles: bot
 
 Ou execute o **script**.
 ```sh
-python3 ./scripts/create_bot.py
+python3 scripts/config_env.py
 ```
+
+Funcionalidades do **script**:
+- [x] Configurar Bot
+- [x] Configurar Livechat
+- [x] Configurar Departamento Padrão
 
 ### 2.4 Configuração do WebHook
 Siga **Administration** > **Integrations** > **+ New** > **Outgoing**.
