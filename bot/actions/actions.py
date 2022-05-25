@@ -10,6 +10,7 @@
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
+from rasa_sdk.events import AllSlotsReset
 from rasa_sdk.executor import CollectingDispatcher
 
 class ActionSayMyName(Action):
@@ -26,4 +27,4 @@ class ActionSayMyName(Action):
         name_result = "I will remember that your name is {}.".format(name)
         dispatcher.utter_message(name_result)
 
-        return []
+        return [AllSlotsReset()]
