@@ -139,6 +139,37 @@ def config_livechat():
     else:
         logger.error(f"Registration still enabled... {registration_form_response}")
 
+def config_department():
+    bot_id = get_authentication_token(bot_name)["X-User-Id"]
+    admin_header = get_authentication_token(admin_name)
+
+    department_info = {
+        'department': {
+            'enabled': True,
+            'showOnRegistration': True,
+            'showOnOfflineForm': True,
+            'email': bot_email,
+            'name': 'department',
+            'description': 'default department'
+        },
+        'agents': [{
+            'agentId': bot_id,
+            'username': bot_name,
+            'count': 0,
+            'order': 0
+        }]
+    }
+
+    create_department_response = requests.post(
+        host + '/api/v1/livechat/department',
+        data=json.dumps(department_info),
+        headers=admin_header
+    )
+
+    if create_department_response.json()['success'] is True:
+        logger.info('Default Department ON')
+    else:
+        logger.error(f'Error while creating department! | {create_department_response.text}')
 
 if __name__ == '__main__':
     logger.info("===== Sara Mascot S2 =====")
@@ -160,6 +191,9 @@ if __name__ == '__main__':
 
             logger.info(">> Configure Livechat")
             config_livechat()
+
+            logger.info(">> Cofigure Department")
+            config_department()
 
         except:
             logger.info("Rasa Server DOWN...") 
