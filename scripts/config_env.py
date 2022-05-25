@@ -112,19 +112,32 @@ def config_bot():
     set_avatar(bot_name)
     set_status_active(bot_name)
 
-def enable_livechat():
+def config_livechat():
     user_header = get_authentication_token(admin_name)
 
+    # Enable Livechat
     livechat_response = requests.post(
         host + '/api/v1/settings/Livechat_enabled',
         data=json.dumps({'value': True}),
         headers=user_header
     )
-    
+
     if livechat_response.json()["success"] == True:
         logger.info("Livechat ON")
     else:
         logger.error(f"Livechat OFF | {livechat_response}")
+    
+    # Disable show pre-registration form
+    registration_form_response = requests.post(
+        host + '/api/v1/settings/Livechat_registration_form',
+        data=json.dumps({'value': False}),
+        headers=user_header
+    )
+
+    if registration_form_response.json()["success"] == True:
+        logger.info(f"Registration form disabled!") 
+    else:
+        logger.error(f"Registration still enabled... {registration_form_response}")
 
 
 if __name__ == '__main__':
@@ -146,7 +159,7 @@ if __name__ == '__main__':
             config_bot()
 
             logger.info(">> Configure Livechat")
-            enable_livechat()
+            config_livechat()
 
         except:
             logger.info("Rasa Server DOWN...") 
