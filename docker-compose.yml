@@ -7,18 +7,23 @@ services:
     build:
       context: .
       dockerfile: ./docker/bot.Dockerfile
-    restart: unless-stopped
-    command: "rasa run --enable-api -vv"
     depends_on:
       - actions
+    networks: 
+      - rasa-network
+    public: true
+    restart: unless-stopped
     ports:
       - 5005:5005
+    command: run --enable-api --cors "*"
   # ================================= Actions =================================
   # Rasa middleware used to connect with external APIs.
   actions:
     build:
       context: .
       dockerfile: ./docker/actions.Dockerfile
+    networks: 
+      - rasa-network
     restart: unless-stopped
     ports:
       - 5055:5055
@@ -26,14 +31,8 @@ services:
   # Rocket.Chat instance.
   rocketchat:
     image: registry.rocket.chat/rocketchat/rocket.chat:latest
-    command: >
-      bash -c
-        "for i in `seq 1 30`; do
-          node main.js &&
-          s=$$? && break || s=$$?;
-          echo \"Tried $$i times. Waiting 5 secs...\";
-          sleep 5;
-        done; (exit $$s)"
+    networks: 
+      - rasa-network
     restart: unless-stopped
     volumes:
       - ./uploads:/app/uploads
@@ -51,6 +50,8 @@ services:
   # Mongo database and replica set.
   mongo:
     image: mongo:4.0
+    networks: 
+      - rasa-network
     restart: unless-stopped
     volumes:
      - ./data/db:/data/db
@@ -60,6 +61,8 @@ services:
   # it will run the command and remove himself (it will not stay running)
   mongo-init-replica:
     image: mongo:4.0
+    networks: 
+      - rasa-network
     command: >
       bash -c
         "for i in `seq 1 30`; do
@@ -73,3 +76,6 @@ services:
         done; (exit $$s)"
     depends_on:
       - mongo
+networks: 
+    rasa-network:
+        driver: bridge

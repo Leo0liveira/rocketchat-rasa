@@ -1,6 +1,5 @@
 FROM rasa/rasa:3.1.0-full
 
-WORKDIR /app
 USER root
 COPY ./bot /app
 
@@ -8,7 +7,3 @@ COPY ./bot /app
 RUN rasa train 
 
 USER 1001
-
-# Deixando o container virgem
-ENTRYPOINT []
-CMD []
