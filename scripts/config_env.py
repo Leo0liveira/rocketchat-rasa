@@ -3,19 +3,43 @@
 import json
 import logging
 import requests
+import argparse
 from time import sleep
 
 # == Log Config ==
 logging.basicConfig(format='%(levelname)s : %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+# == CLI ==
+parser = argparse.ArgumentParser()
+
+parser.add_argument(
+    '--admin-name', '-an', type=str, default='boss',
+    help='Admin username (default: boss)'
+)
+parser.add_argument(
+    '--admin-password', '-ap', type=str, default='boss',
+    help='Admin password (default: boss)'
+)
+
+parser.add_argument(
+    '--bot-name', '-bn', type=str, default='rasa_bot',
+    help='Bot username (default: rasa_bot)'
+)
+parser.add_argument(
+    '--bot-password', '-bp', type=str, default='rasa_bot',
+    help='Bot password (default: rasa_bot)'
+)
+
+args = parser.parse_args()
+
 # == Admin Info == 
-admin_name = "boss"
-admin_password = "boss"
+admin_name = args.admin_name 
+admin_password = args.admin_password
 
 # == Bot Info == 
-bot_name = "rasa_bot"
-bot_password = "rasa_bot"
+bot_name = args.bot_name
+bot_password = args.bot_password 
 bot_email = bot_name + '@email.com'
 
 # == Host Info ==
